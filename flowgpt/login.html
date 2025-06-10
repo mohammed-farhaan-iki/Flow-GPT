@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SignIn&SignUp</title>
+    <link rel="stylesheet"  href="lstyles.css" />
+    <script
+      src="https://kit.fontawesome.com/64d58efce2.js"
+      crossorigin="anonymous"
+    ></script>
+  
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container">
+        <div class="signin-signup">
+          <form action="login.php" class="sign-in-form" method="post"  onsubmit="return handleLogin(this)" >
+            <h2 class="title">Sign In</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input name="username"  id="username" type="text" placeholder="Username" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input name="password" id="password" type="password" placeholder="Password" />
+            </div>
+            <input type="submit" value="Login" class="btn solid" />
+
+            <p class="social-text">Or Sign in with social platforms</p>
+            <div class="social-media">
+              <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-google"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </form>
+
+
+          <form action="register.php" class="sign-up-form" method="post" onsubmit="return handleRegistration(this);">
+            <h2 class="title">Sign Up</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input name="new-username" id="new-username" type="text" placeholder="Username" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input name="email" id="email" type="email" placeholder="Email" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input name="new-password" id="new-password" type="password" placeholder="Password" />
+            </div>
+            <input type="submit" value="Sign Up" class="btn solid" />
+
+            <p class="social-text">Or Sign up with social platforms</p>
+            <div class="social-media">
+              <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-google"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="panels-container">
+
+        <div class="panel left-panel">
+            <div class="content">
+                <h3>TOKEN GEN</h3>
+                <p>Ready to Get Started? Register Now and Explore.</p>
+                <button class="btn transparent" id="sign-up-btn">Sign Up</button>
+            </div>
+            <img src="./img/log.svg" class="image" alt="">
+        </div>
+
+        <div class="panel right-panel">
+            <div class="content">
+                <h3>One of us?</h3>
+                <p>Access Your Profile by Logging In – Stay Connected with Us.</p>
+                <button class="btn transparent" id="sign-in-btn">Sign In</button>
+            </div>
+            <img src="./img/register.svg" class="image" alt="">
+        </div>
+      </div>
+    </div>
+  
+
+    <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    const sign_in_btn = document.querySelector("#sign-in-btn");
+    const sign_up_btn = document.querySelector("#sign-up-btn");
+    const container = document.querySelector(".container");
+
+    sign_up_btn.addEventListener("click", () => {
+        container.classList.add("sign-up-mode");
+    });
+
+    sign_in_btn.addEventListener("click", () => {
+        container.classList.remove("sign-up-mode");
+    });
+
+    function handleLogin(form) {
+        // Prevent the default form submission
+        event.preventDefault();
+
+        // Retrieve the form input values
+        const username = form.querySelector("#username").value;
+        const password = form.querySelector("#password").value;
+
+        // Perform client-side validation
+        if (!username || !password) {
+            alert("Please fill in all login details.");
+            return false; // Do not proceed further
+        }
+
+        // Send an AJAX request to the server for login
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "login.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (response.status === "success") {
+                    // Redirect to the welcome page upon successful login
+                    window.location.href = "token.php";
+                } else {
+                    alert("Invalid username or password. Please try again.");
+                }
+            }
+        };
+
+        xhr.send(`username=${username}&password=${password}`);
+        return false; // Prevent the form from submitting
+    }
+
+    function handleRegistration(form) {
+    // Prevent the default form submission
+    event.preventDefault();
+
+    // Retrieve the form input values
+    const newUsername = form.querySelector("#new-username").value;
+    const email = form.querySelector("#email").value;
+    const newPassword = form.querySelector("#new-password").value;
+
+    // Perform client-side validation
+    if (!newUsername || !email || !newPassword) {
+        alert("All fields are required.");
+        return false; // Do not proceed further
+    }
+
+    // Send an AJAX request to the server for registration
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "register.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.status === "success") {
+                // Registration successful; display a success message
+                alert("Registration successful. You can now log in.");
+                // Redirect to the login page
+                window.location.href = "login.html";
+            } else {
+                // Registration failed; display an error message
+                alert(response.message);
+            }
+        }
+    };
+
+    xhr.send(`new-username=${newUsername}&email=${email}&new-password=${newPassword}`);
+    return false; // Prevent the form from submitting
+}
+
+    const loginForm = document.querySelector(".sign-in-form");
+    loginForm.addEventListener("submit", function () {
+        // Call the handleLogin function when the login form is submitted
+        return handleLogin(this);
+    });
+
+    const registrationForm = document.querySelector(".sign-up-form");
+    registrationForm.addEventListener("submit", function () {
+        // Call the handleRegistration function when the registration form is submitted
+        return handleRegistration(this);
+    });
+});
+
+  
+
+    </script>
+  </body>
+</html>

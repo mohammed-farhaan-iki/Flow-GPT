@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="status.css">
+</head>
+<body>
+    <aside class="profile-card">
+        <header>
+            <!-- here’s the avatar -->
+            <br><br><br><br>
+            <h1>YOUR NUMBER</h1>
+            <h1><?php echo $idFromDatabase; ?></h1>
+            <br><br><br><br>
+
+            <!-- the username -->
+            <h1>status</h1>
+
+            <!-- and role or location -->
+        </header>
+
+        <!-- bit of a bio; who are you? -->
+        <div class="profile-bio">
+            <h1>Application Number: <?php echo $applicationNumberFromDatabase; ?></h1>
+            <h1>Name: <?php echo $nameFromDatabase; ?></h1>
+            <h1>Department: <?php echo $departmentFromDatabase; ?></h1>
+        </div>
+    </aside>
+</body>
+</html>
